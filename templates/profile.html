@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Страница создания заявки{% endblock %}
+
+{% block content %}
+    <a class="btn btn-primary" href="{% url 'add_order' %}">Оставить новую заявку</a>
+
+    <h1>История заявок</h1>
+    <div class="card-group">
+
+        {% for order in order_list_by_user %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Заявка № {{ order.pk }}</h5>
+                    <p class="card-text">Желаемая дата и время получения услуги: {{ order.date }} - {{ order.time }}</p>
+                    {% if order.type %}<p class="card-text">Вид услуги: {{ order.type }}</p>{% endif %}
+                    {% if order.description %}<p class="card-text">Описание иной услуги: {{ order.description }}</p>{% endif %}
+                    <p class="card-text">Тип оплаты: {{ order.get_payment_type_display }}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-body-secondary">{{ order.date_at }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -32,11 +32,11 @@
                 {% else %}
                     {% if user.is_superuser %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Панель Администратора</a>
+                            <a class="nav-link" href="{% url 'admin_panel' %}">Панель Администратора</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Личный Кабинет</a>
+                            <a class="nav-link" href="{% url 'profile' %}">Личный Кабинет</a>
                         </li>
                     {% endif %}
                     <li class="nav-item">

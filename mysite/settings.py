@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'general'
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
     },
 ]
 
+# WSGI_APPLICATION = 'general.wsgi.application'
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 

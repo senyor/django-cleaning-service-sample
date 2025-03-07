@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Страница Авторизации{% endblock %}
+
+s{% block content %}
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            Имя пользователя или пароль введены некорректно. Попробуйте снова.
+        </div>
+    {% endif %}
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="loginField" class="form-label">Логин:</label>
+            <input name="username" type="text" class="form-control" id="loginField">
+        </div>
+        <div class="mb-3">
+            <label for="passwordField" class="form-label">Пароль:</label>
+            <input name="password" type="password" class="form-control" id="passwordField"/>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary mb-3">Войти</button>
+        </div>
+    </form>
+{% endblock %}

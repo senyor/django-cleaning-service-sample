@@ -4,5 +4,48 @@
 {% block title %}Панель администратора{% endblock %}
 
 {% block content %}
+    <h1>Управление заявками</h1>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for order in order_list_by_user %}
+            <div class="col">
+                <div class="card-body">
+                    <h5 class="card-title">Заявка № {{ order.pk }}</h5>
+                    <p class="card-text">Желаемая дата и время получения услуги: {{ order.date }} - {{ order.time }}</p>
+                    <p class="card-text">ФИО заявителя: {{ order.user.userprofile.fio }}</p>
+                    <p class="card-text">Контактные данные: {{ order.user.userprofile.phone }}</p>
+                    {% if order.type %}<p class="card-text">Вид услуги: {{ order.type }}</p>{% endif %}
+                    {% if order.description %}<p class="card-text">Описание иной услуги: {{ order.description }}</p>{% endif %}
+                    <p class="card-text">Тип оплаты: {{ order.get_payment_type_display }}</p>
+                    <p class="card-text">Статус оказания услуги: {{ order.get_status_display }}</p>
+                    {% if order.status == '3' %}
+                        <p class="card-text">Причина отмены: {{ order.comment }}</p>
+                    {% endif %}
 
+                    {% if order.status == '0' %}
+                        <div class="d-flex gap-2">
+                            <form method="post" action="{% url 'confirm_order' order.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Подтвердить</button>
+                            </form>
+                            <a class="btn btn-warning" href="{% url 'cancel_order' order.pk %}">Отклонить</a>
+                            <form method="post" action="{% url 'delete_order' order.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                    {% if order.status == '1' %}
+                        <form method="post" action="{% url 'execute_order' order.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Выполнить</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <small class="text-body-secondary">{{ order.date_at }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

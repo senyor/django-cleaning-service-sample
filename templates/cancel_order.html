@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Страница отмены заявки{% endblock %}
+
+{% block content %}
+    <div class="alert alert-info" role="alert">
+        <h1>Отклонение заявки № {{ order.pk }}</h1>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Причина отмены</label>
+            <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+        </div>
+        <button class="btn btn-warning" type="submit">Отменить заявку</button>
+    </form>
+{% endblock %}

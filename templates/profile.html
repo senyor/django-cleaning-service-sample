@@ -7,19 +7,27 @@
     <a class="btn btn-primary" href="{% url 'add_order' %}">Оставить новую заявку</a>
 
     <h1>История заявок</h1>
-    <div class="card-group">
-
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for order in order_list_by_user %}
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Заявка № {{ order.pk }}</h5>
-                    <p class="card-text">Желаемая дата и время получения услуги: {{ order.date }} - {{ order.time }}</p>
-                    {% if order.type %}<p class="card-text">Вид услуги: {{ order.type }}</p>{% endif %}
-                    {% if order.description %}<p class="card-text">Описание иной услуги: {{ order.description }}</p>{% endif %}
-                    <p class="card-text">Тип оплаты: {{ order.get_payment_type_display }}</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-body-secondary">{{ order.date_at }}</small>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Заявка № {{ order.pk }}</h5>
+                        <p class="card-text">Желаемая дата и время получения услуги: {{ order.date }} - {{ order.time }}</p>
+                        {% if order.type %}<p class="card-text">Вид услуги: {{ order.type }}</p>{% endif %}
+                        {% if order.description %}<p class="card-text">Описание иной услуги: {{ order.description }}</p>{% endif %}
+                        <p class="card-text">Тип оплаты: {{ order.get_payment_type_display }}</p>
+                        <p class="card-text">Статус оказания услуги: {{ order.get_status_display }}</p>
+                        {% if order.status == '0' %}
+                            <form method="post" action="{% url 'delete_order' order.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">{{ order.date_at }}</small>
+                    </div>
                 </div>
             </div>
         {% endfor %}

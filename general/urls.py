@@ -1,6 +1,7 @@
 from django.urls import path
 
-from general.views import index, logout, profile, admin_portal, add_order, admin_panel
+from general.views import index, logout, profile, admin_portal, add_order, admin_panel, confirm_order, cancel_order, \
+    execute_order, delete_order
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -11,4 +12,8 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('add_order/', add_order, name='add_order'),
     path('admin_panel/', admin_panel, name='admin_panel'),
+    path('confirm_order/<int:order_id>/', confirm_order, name='confirm_order'),
+    path('cancel_order/<int:order_id>/', cancel_order, name='cancel_order'),
+    path('execute_order/<int:order_id>/', execute_order, name='execute_order'),
+    path('delete_order/<int:order_id>/', delete_order, name='delete_order'),
 ]

@@ -4,5 +4,21 @@
 {% block title %}Страница формирования заявки{% endblock %}
 
 {% block content %}
+    <h1>Формирование заявки</h1>
 
+    <form method="post" action="{% url 'add_order' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="alert alert-danger">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Добавить заявку</button>
+    </form>
 {% endblock %}

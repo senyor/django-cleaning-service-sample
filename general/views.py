@@ -2,7 +2,7 @@ from django.contrib import auth
 from django.contrib.auth import login
 from django.shortcuts import render, redirect, get_object_or_404
 
-from general.forms import UserRegisterForm
+from general.forms import UserRegisterForm, OrderFillForm
 from general.models import Order, UserProfile
 
 
@@ -41,10 +41,36 @@ def profile(request):
 
 
 def add_order(request):
-    user = request.user
-    if not user.is_authenticated or user.is_superuser:
+    if not request.user.is_authenticated or request.user.is_superuser:
         return redirect('index')
-    return render(request, "add_order.html")
+
+    form = OrderFillForm()
+
+    if request.method == "POST":
+        checkbox = request.POST.get('checkbox', None)
+        description = request.POST.get('description', None)
+        order_type = request.POST.get('type', None)
+
+        data_post = request.POST.copy()
+        form = OrderFillForm(data_post)
+
+        if checkbox:
+            if not description:
+                form.add_error('description', 'Укажите описание иной услуги')
+            data_post['type'] = ''
+        else:
+            if not order_type:
+                form.add_error('type', 'Укажите тип услуги')
+            data_post['description'] = ''
+
+    if form.is_valid():
+        order = form.save(commit=False)
+        order.user = request.user
+        order.save()
+        return redirect('profile')
+
+    context = {"form": form}
+    return render(request, "add_order.html", context )
 
 
 def admin_panel(request):

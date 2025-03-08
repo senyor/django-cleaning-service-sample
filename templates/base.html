@@ -29,6 +29,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Вход</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register_user' %}">Регистрация</a>
+                    </li>
                 {% else %}
                     {% if user.is_superuser %}
                         <li class="nav-item">

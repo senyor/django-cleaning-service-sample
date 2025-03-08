@@ -1,11 +1,34 @@
 from django.contrib import auth
+from django.contrib.auth import login
 from django.shortcuts import render, redirect, get_object_or_404
 
-from general.models import Order
+from general.forms import UserRegisterForm
+from general.models import Order, UserProfile
 
 
 def index(request):
     return render(request, "index.html")
+
+
+def register_user(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
+    form = UserRegisterForm()
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            fio = request.POST.get('fio')
+            phone = request.POST.get('phone')
+            user_profile = UserProfile.objects.create(user=user, fio=fio, phone=phone)
+            user_profile.save()
+
+            login(request, user)
+            return redirect('index')
+
+    context = {"form": form}
+    return render(request, "register_user.html", context)
 
 
 def profile(request):
